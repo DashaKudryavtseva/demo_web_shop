@@ -1,8 +1,11 @@
 from selene import browser, have, command
 from utils.url_parts import Endpoints
+import random
 
 
 class DemoWebShop:
+    '''Класс описывает методы для работы с UI Demo Web Shop'''
+
     quantity: int
     wishlist_quantity: int
 
@@ -50,6 +53,12 @@ class DemoWebShop:
         self.quantity = len(products)
         return products
 
+    @property
+    def get_all_products_on_page(self):
+        browser.element('.side-2').perform(command.js.scroll_into_view)
+        products = browser.all('.product-item>.picture>a')
+        return products
+
     def add_simple_products_to_cart(self):
         for el in self.get_products_available_to_add:
             el.click()
@@ -60,6 +69,14 @@ class DemoWebShop:
         self.get_products_available_to_add[0].click()
         browser.element('.add-to-cart [id^="add-to-wishlist"]').click()
 
+    def add_to_compare_list(self, num):
+        self.get_all_products_on_page[num].click()
+        browser.element('.compare-products input').click()
+
+    def add_new_address(self):
+        browser.element(f'.list a[href="{Endpoints.CUSTOMER_ADDRESSES}"]').click()
+        browser.element('.add-button>[value="Add new"]').click()
+
     def should_quantity_products_in_cart(self):
         self.shopping_cart.perform(command.js.scroll_into_view)
         assert browser.element('.cart-qty').should(have.text(f'({self.quantity})'))
@@ -67,3 +84,6 @@ class DemoWebShop:
     def should_quantity_products_in_wishlist(self, sum):
         self.wishlist.perform(command.js.scroll_into_view)
         assert browser.element('.wishlist-qty').should(have.text(f'({sum})'))
+
+    def should_quantiy_products_in_compare_list(self, num):
+        assert browser.all('.product-name .a-center').should(have.size(num))
