@@ -5,7 +5,7 @@ from page_objects.demo_web_shop import DemoWebShop
 page = DemoWebShop()
 
 
-@allure.tag('ui')
+@allure.tag('UI')
 @allure.label('owner', 'Daria Kudriavtseva')
 @allure.title('Успешное добавление продуктов в корзину')
 def test_add_some_products_in_cart(open_browser_through_api):
@@ -19,7 +19,7 @@ def test_add_some_products_in_cart(open_browser_through_api):
         page.should_quantity_products_in_cart()
 
 
-@allure.tag('ui')
+@allure.tag('UI')
 @allure.label('owner', 'Daria Kudriavtseva')
 @allure.title('Успешное добавление продуктов в "Wishlist"')
 def test_add_product_to_wishlist(open_browser_through_api):
@@ -33,7 +33,7 @@ def test_add_product_to_wishlist(open_browser_through_api):
         page.should_quantity_products_in_wishlist(1)
 
 
-@allure.tag('ui')
+@allure.tag('UI')
 @allure.label('owner', 'Daria Kudriavtseva')
 @allure.title('Успешное добавление продуктов к сравнению')
 def test_add_products_to_compare_list(open_browser_through_api):
@@ -46,10 +46,33 @@ def test_add_products_to_compare_list(open_browser_through_api):
     with step('Проверка наличия продукта в листе сравнения'):
         page.should_quantiy_products_in_compare_list(1)
 
+@allure.tag('UI')
+@allure.label('owner', 'Daria Kudriavtseva')
+@allure.title('Успешное удаление продукта из корзины')
+def test_remove_product_from_cart(open_browser_through_api):
+    with step('Открытие корзины'):
+        page.shopping_cart.click()
+        qty = page.cart_quantity
 
-def test_add_new_address_to_profile(open_browser_through_api):
-    with step('Переход в профиль пользователя'):
-        page.customer_info.click()
+    with step('Удаление продукта из корзины'):
+        page.remove_product_from_cart()
 
-    with step('Открытие вкладки адресов'):
-        page.add_new_address()
+    with step('Проверка успешного удаления продукта'):
+        page.should_remove_success(qty)
+
+@allure.tag('UI')
+@allure.label('owner', 'Daria Kudriavtseva')
+@allure.title('Успешное удаление продукта из корзины')
+def test_remove_all_cart(open_browser_through_api):
+    with step('Открытие корзины'):
+        page.shopping_cart.click()
+
+    with step('Удаление продукта из корзины'):
+        page.remove_all_cart()
+
+    with step('Проверка успешного удаления продукта'):
+        assert page.cart_quantity == 0
+
+
+# мб перенести, в другой файл...хммм
+

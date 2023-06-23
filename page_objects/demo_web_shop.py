@@ -6,7 +6,7 @@ import random
 class DemoWebShop:
     '''Класс описывает методы для работы с UI Demo Web Shop'''
 
-    quantity: int
+    quantity_to_add: int
     wishlist_quantity: int
 
     def __init__(self):
@@ -45,12 +45,22 @@ class DemoWebShop:
         )
 
     @property
+    def cart_quantity(self):
+        empty_cart = browser.element('.order-summary-content').wait_until(
+            have.text('Your Shopping Cart is empty!')
+        )
+        if empty_cart:
+            return 0
+        else:
+            return len(browser.all('.cart-item-row'))
+
+    @property
     def get_products_available_to_add(self):
         browser.element('#newsletter-subscribe-button').perform(
             command.js.scroll_into_view
         )
         products = browser.all('.product-item input[value="Add to cart"]')
-        self.quantity = len(products)
+        self.quantity_to_add = len(products)
         return products
 
     @property
@@ -77,9 +87,16 @@ class DemoWebShop:
         browser.element(f'.list a[href="{Endpoints.CUSTOMER_ADDRESSES}"]').click()
         browser.element('.add-button>[value="Add new"]').click()
 
+    def remove_product_from_cart(self):
+        if self.cart_quantity != 0:
+            browser.all('.cart-item-row [name="removefromcart"]')[0].click()
+            browser.element('.buttons [name="updatecart"]').click()
+
     def should_quantity_products_in_cart(self):
         self.shopping_cart.perform(command.js.scroll_into_view)
-        assert browser.element('.cart-qty').should(have.text(f'({self.quantity})'))
+        assert browser.element('.cart-qty').should(
+            have.text(f'({self.quantity_to_add})')
+        )
 
     def should_quantity_products_in_wishlist(self, sum):
         self.wishlist.perform(command.js.scroll_into_view)
@@ -87,3 +104,14 @@ class DemoWebShop:
 
     def should_quantiy_products_in_compare_list(self, num):
         assert browser.all('.product-name .a-center').should(have.size(num))
+
+    def should_remove_success(self, init_qty):
+        assert self.cart_quantity < init_qty
+
+    def remove_all_cart(self):
+        if self.cart_quantity != 0:
+            products = browser.all('.cart-item-row [name="removefromcart"]')
+            for p in products:
+                p.click()
+            browser.element('.buttons [name="updatecart"]').click()
+
