@@ -2,7 +2,6 @@ import os
 
 import pytest
 from selene import browser
-from allure import step
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -28,7 +27,7 @@ def browser_configuration():
     #
     # selenoid_capabilities = {
     #     "browserName": 'chrome',
-    #     "browserVersion": '99.0',
+    #     "browserVersion": '100.0',
     #     "selenoid:options": {"enableVNC": True, "enableVideo": True},
     # }
     #
@@ -57,7 +56,7 @@ def browser_configuration():
 
 
 @pytest.fixture()
-def login_admin_ui(api_ui_client):
+def login_demoshop(api_ui_client):
     login = os.getenv('user_login')
     password = os.getenv('user_password')
 
@@ -75,8 +74,8 @@ def login_admin_ui(api_ui_client):
 
 
 @pytest.fixture()
-def open_browser_through_api(login_admin_ui, browser_configuration):
-    token = login_admin_ui.cookies.get('NOPCOMMERCE.AUTH')
+def open_browser_through_api(login_demoshop, browser_configuration):
+    token = login_demoshop.cookies.get('NOPCOMMERCE.AUTH')
 
     browser.open("")
     browser.driver.add_cookie({"name": "NOPCOMMERCE.AUTH", "value": token})

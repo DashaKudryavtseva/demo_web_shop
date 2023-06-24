@@ -1,9 +1,17 @@
+import os
+from dotenv import load_dotenv
+from allure import step
+
+from tests.api.models.demo_shop import DemoShop
+
+load_dotenv()
+
+LOGIN = os.getenv('user_login')
+PASSWORD = os.getenv('user_password')
 
 
-
-'''
 def test_add_book_in_cart_with_object_model():
-    ''Успешное добавление товара в корзину''
+    '''Успешное добавление товара в корзину'''
     with step('Login through API'):
         demoshop = DemoShop()
         demoshop.login(LOGIN, PASSWORD)
@@ -17,4 +25,3 @@ def test_add_book_in_cart_with_object_model():
 
     with step('Assert quantity of products in cart'):
         assert cart.quantity_of_products == '(4)'
-'''

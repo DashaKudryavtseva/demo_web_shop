@@ -1,6 +1,6 @@
 import allure
 from allure import step
-from page_objects.demo_web_shop import DemoWebShop
+from tests.ui.page_objects.demo_web_shop import DemoWebShop
 from utils.url_parts import Endpoints
 
 page = DemoWebShop()
