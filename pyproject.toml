@@ -21,7 +21,7 @@ markers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 pytest = "^7.3.2"
 selenium = "4.5.0"
 selene = "2.0.0rc2"
