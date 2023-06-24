@@ -14,35 +14,17 @@ class DemoWebShop:
 
         self.shopping_cart = browser.element('#topcartlink')
         self.wishlist = browser.element('.ico-wishlist')
-
-        self.books = browser.element(f'.top-menu a[href="{Endpoints.BOOKS}"]')
-        self.computers = browser.element(f'.top-menu a[href="{Endpoints.COMPUTERS}"]')
-        self.desctops = browser.element(f'.item-box a[href="{Endpoints.DESKTOPS}"]')
-        self.notebooks = browser.element(f'.top-menu a[href="{Endpoints.NOTEBOOKS}"]')
-        self.accessories = browser.element(
-            f'.top-menu a[href="{Endpoints.ACCESSORIES}"]'
-        )
-        self.electronics = browser.element(
-            f'.top-menu a[href="{Endpoints.ELECTRONICS}"]'
-        )
-        self.camera_photo = browser.element(
-            f'.top-menu a[href="{Endpoints.CAMERA_PHOTO}"]'
-        )
-        self.cell_phones = browser.element(
-            f'.top-menu a[href="{Endpoints.CELL_PHONES}"]'
-        )
-        self.apparel_shoes = browser.element(
-            f'.top-menu a[href="{Endpoints.APPAREL_SHOES}"]'
-        )
-        self.digital_downloads = browser.element(
-            f'.top-menu a[href="{Endpoints.DIGITAL_DOWNLOADS}"]'
-        )
-        self.jewelry = browser.element(f'.top-menu a[href="{Endpoints.JEWELRY}"]')
-        self.gift_cards = browser.element(f'.top-menu a[href="{Endpoints.GIFT_CARDS}"]')
-
         self.customer_info = browser.element(
             f'.header-links-wrapper a[href="{Endpoints.CUSTOMER}"]'
         )
+
+    def choose_category(self, category_name):
+        browser.element(f'.top-menu a[href="{category_name}"]').click()
+
+    def choose_subcategory(self, sub_category):
+        browser.element(
+            f'.sub-category-item > .title > a[href="{sub_category}"]'
+        ).click()
 
     @property
     def cart_quantity(self):
@@ -114,4 +96,3 @@ class DemoWebShop:
             for p in products:
                 p.click()
             browser.element('.buttons [name="updatecart"]').click()
-
