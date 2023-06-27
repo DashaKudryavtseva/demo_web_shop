@@ -13,6 +13,9 @@ log_cli_format = '%(asctime)s %(message)s'
 log_cli_date_format = '%Y-%m-%d %H:%M:%S'
 addopts = "-s -v --clean-alluredir --alluredir=allure-results --allure-no-capture"
 markers = [
+    "addition: for tests that check the addition of products",
+    "removing: for tests that check the removal of products",
+    "user_info: for tests that check for changes in user information",
     "get: for test with GET request to API",
     "post: for test with POST request to API",
     "put: for test with PUT request to API",

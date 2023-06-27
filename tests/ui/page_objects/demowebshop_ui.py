@@ -1,6 +1,4 @@
 from selene import browser, have, command
-from utils.url_parts import Endpoints
-import random
 
 
 class DemoWebShop:
@@ -14,9 +12,6 @@ class DemoWebShop:
 
         self.shopping_cart = browser.element('#topcartlink')
         self.wishlist = browser.element('.ico-wishlist')
-        self.customer_info = browser.element(
-            f'.header-links-wrapper a[href="{Endpoints.CUSTOMER}"]'
-        )
 
     def choose_category(self, category_name):
         browser.element(f'.top-menu a[href="{category_name}"]').click()
@@ -64,10 +59,6 @@ class DemoWebShop:
     def add_to_compare_list(self, num):
         self.get_all_products_on_page[num].click()
         browser.element('.compare-products input').click()
-
-    def add_new_address(self):
-        browser.element(f'.list a[href="{Endpoints.CUSTOMER_ADDRESSES}"]').click()
-        browser.element('.add-button>[value="Add new"]').click()
 
     def remove_product_from_cart(self):
         if self.cart_quantity != 0:
