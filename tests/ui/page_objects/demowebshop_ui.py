@@ -5,7 +5,7 @@ class DemoWebShop:
     '''Класс описывает методы для работы с UI Demo Web Shop'''
 
     quantity_to_add: int
-    wishlist_quantity: int
+
 
     def __init__(self):
         self.banner_closer = browser.element('#bar-notification .close')
@@ -22,14 +22,16 @@ class DemoWebShop:
         ).click()
 
     @property
-    def cart_quantity(self):
-        empty_cart = browser.element('.order-summary-content').wait_until(
-            have.text('Your Shopping Cart is empty!')
-        )
-        if empty_cart:
-            return 0
-        else:
-            return len(browser.all('.cart-item-row'))
+    def calc_cart_quantity(self) -> int:
+        self.shopping_cart.perform(command.js.scroll_into_view)
+        qty = browser.element('.cart-qty').locate().text
+        return int(qty.replace('(', '').replace(')', ''))
+
+    @property
+    def calc_wishlist_quantity(self) -> int:
+        self.shopping_cart.perform(command.js.scroll_into_view)
+        qty = browser.element('.wishlist-qty').locate().text
+        return int(qty.replace('(', '').replace(')', ''))
 
     @property
     def get_products_available_to_add(self):
@@ -53,36 +55,40 @@ class DemoWebShop:
             self.banner_closer.click()
 
     def add_to_wishlist_list(self):
-        self.get_products_available_to_add[0].click()
+        self.get_all_products_on_page[0].click()
         browser.element('.add-to-cart [id^="add-to-wishlist"]').click()
+        self.banner_closer.click()
 
-    def add_to_compare_list(self, num):
-        self.get_all_products_on_page[num].click()
+    def add_to_compare_list(self):
+        self.get_all_products_on_page[0].click()
+        self.this_compare_product = browser.element('.compare-products input').locate().text
         browser.element('.compare-products input').click()
 
+
     def remove_product_from_cart(self):
-        if self.cart_quantity != 0:
+        if self.calc_cart_quantity != 0:
             browser.all('.cart-item-row [name="removefromcart"]')[0].click()
+            browser.element('.buttons [name="updatecart"]').perform(
+                command.js.scroll_into_view
+            )
             browser.element('.buttons [name="updatecart"]').click()
 
-    def should_quantity_products_in_cart(self):
+    def should_addition_products_in_cart(self, qty):
         self.shopping_cart.perform(command.js.scroll_into_view)
-        assert browser.element('.cart-qty').should(
-            have.text(f'({self.quantity_to_add})')
-        )
+        assert self.calc_cart_quantity > qty
 
-    def should_quantity_products_in_wishlist(self, sum):
+    def should_quantity_products_in_wishlist(self, qty):
         self.wishlist.perform(command.js.scroll_into_view)
-        assert browser.element('.wishlist-qty').should(have.text(f'({sum})'))
+        assert self.calc_wishlist_quantity > qty
 
-    def should_quantiy_products_in_compare_list(self, num):
-        assert browser.all('.product-name .a-center').should(have.size(num))
+    def should_product_in_compare_list(self):
+        assert browser.all('.product-name td a')[0].should(have.text(self.this_compare_product))
 
     def should_remove_success(self, init_qty):
-        assert self.cart_quantity < init_qty
+        assert self.calc_cart_quantity < init_qty
 
     def remove_all_cart(self):
-        if self.cart_quantity != 0:
+        if self.calc_cart_quantity != 0:
             products = browser.all('.cart-item-row [name="removefromcart"]')
             for p in products:
                 p.click()

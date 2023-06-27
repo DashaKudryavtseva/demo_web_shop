@@ -6,6 +6,9 @@ authors = ["Daria Kudriavtseva <situation96@mail.ru>"]
 readme = "README.md"
 packages = [{include = "demo_web_shop"}]
 
+[tool.poetry.group.dev.dependencies]
+setuptools = "^68.0.0"
+
 [tool.pytest.ini_options]
 log_cli = 1
 log_level = "INFO"

@@ -20,7 +20,10 @@ def api_ui_client():
     client = BaseSession(base_url=os.getenv('base_url'))
     return client
 
+
 '''TODO: When the selenoid service will work - uncomment all'''
+
+
 @pytest.fixture(scope='session')
 def browser_configuration():
     # options = Options()
@@ -76,8 +79,6 @@ def login_demoshop(api_ui_client):
 @pytest.fixture(scope='session')
 def open_browser_through_api(login_demoshop, browser_configuration):
     token = login_demoshop.cookies.get('NOPCOMMERCE.AUTH')
-
     browser.open("")
     browser.driver.add_cookie({"name": "NOPCOMMERCE.AUTH", "value": token})
     browser.open("")
-
