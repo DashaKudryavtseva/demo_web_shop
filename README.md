@@ -41,7 +41,9 @@
 
 ![Telegram Notifications](/src/telegram_notofications.png)
 
-__Примеры Allure отчетов:__ 
+### __Примеры Allure отчётов:__ 
+
+#### [Allure Report](https://jenkins.autotests.cloud/job/04-little_didi-demowebshop/allure/)
 
 UI-тесты
 

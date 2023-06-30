@@ -1,6 +1,7 @@
 import os
 
 import pytest
+
 from selene import browser
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -19,9 +20,6 @@ def load_env():
 def api_ui_client():
     client = BaseSession(base_url=os.getenv('base_url'))
     return client
-
-
-'''TODO: When the selenoid service will work - uncomment all'''
 
 
 @pytest.fixture()
@@ -43,7 +41,7 @@ def browser_configuration():
         command_executor=f"https://{s_login}:{s_password}@selenoid.autotests.cloud/wd/hub",
         options=options,
     )
-    driver.implicitly_wait(50)
+    driver.implicitly_wait(60)
     browser.config.driver = driver
 
     browser.config.browser_name = "chrome"
@@ -55,6 +53,7 @@ def browser_configuration():
     attach.add_logs(browser)
     attach.add_html(browser)
     attach.add_video(browser)
+
     browser.quit()
 
 

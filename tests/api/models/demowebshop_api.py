@@ -1,4 +1,3 @@
-
 import os
 
 from data.user_info import UserAddress
@@ -41,7 +40,6 @@ class DemoShop:
             url=f'{self.__url_for_simple_addition}/{id_product}/1/1'
         ).json()
         self.cart = Cart(json=responce)
-        return self.cart
 
     def add_product_with_params(self, id_product):
         data = {
@@ -55,7 +53,6 @@ class DemoShop:
         ).json()
         print(responce)
         self.cart = Cart(json=responce)
-        return self.cart
 
     def add_new_address_to_user_profile(self, user_address: UserAddress):
         data = {

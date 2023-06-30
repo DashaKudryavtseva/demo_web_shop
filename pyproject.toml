@@ -12,9 +12,7 @@ setuptools = "^68.0.0"
 [tool.pytest.ini_options]
 log_cli = 1
 log_level = "INFO"
-log_cli_format = '%(asctime)s %(message)s'
-log_cli_date_format = '%Y-%m-%d %H:%M:%S'
-addopts = "-s -v --clean-alluredir --alluredir=allure-results --allure-no-capture"
+addopts = "-s --clean-alluredir --alluredir=allure-results --allure-no-capture"
 markers = [
     "addition: for tests that check the addition of products",
     "removing: for tests that check the removal of products",

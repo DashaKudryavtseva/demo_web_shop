@@ -33,12 +33,11 @@ address_info = UserAddress(
 @allure.label('owner', 'Daria Kudriavtseva')
 @allure.title('Успешное добавление товара из раздела "BOOKS" в корзину')
 def test_add_book_in_cart(dws_session):
-    with step('Добавление продуктов в корзину'):
-        cart = dws_session.add_simple_product(13)
-        cart = dws_session.add_simple_product(43)
+    with step('Добавление товара в корзину'):
+        dws_session.add_simple_product(43)
 
     with step('Проверка статуса добавления'):
-        assert cart.additional_product_sucsess_status is True
+        assert dws_session.cart.additional_product_sucsess_status is True
 
 
 @allure.tag('API')
@@ -46,10 +45,10 @@ def test_add_book_in_cart(dws_session):
 @allure.title('Успешное добавление товара из раздела "DESKTOPS" в корзину')
 def test_add_desktop_in_cart(dws_session):
     with step('Добавление продуктов в корзину'):
-        cart = dws_session.add_product_with_params(72)
+        dws_session.add_product_with_params(72)
 
     with step('Проверка статуса добавления'):
-        assert cart.additional_product_sucsess_status is True
+        assert dws_session.cart.additional_product_sucsess_status is True
 
 
 @allure.tag('API')
@@ -57,8 +56,8 @@ def test_add_desktop_in_cart(dws_session):
 @allure.title('Успешное добавление нового адреса в профиль пользователя')
 def test_add_address_to_user_profile(dws_session):
     with step('Добавление нового адреса'):
-        addition_address_status = dws_session.add_new_address_to_user_profile(address_info)
+        addition_address_status = dws_session.add_new_address_to_user_profile(
+            address_info
+        )
     with step('Проверка статуса добавления адреса'):
         assert addition_address_status == 200
-
-

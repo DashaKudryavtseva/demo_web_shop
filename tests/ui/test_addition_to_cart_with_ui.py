@@ -1,6 +1,5 @@
 import allure
 import pytest
-from selene import browser
 from allure import step
 from tests.ui.page_objects.demowebshop_ui import DemoWebShop
 from utils.url_parts import Endpoints
