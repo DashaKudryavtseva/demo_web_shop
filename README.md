@@ -47,9 +47,13 @@
 
 UI-тесты
 
- ![Allure UI](/src/allure_ui_tests_1.png)
+![Allure UI](/src/allure_ui_tests_1.png)
 
 API-тесты
 
- ![Allure API](/src/allure_api_tests_2.png)
+![Allure API](/src/allure_api_tests_2.png)
+
+Пример видео прохождения теста
+
+![Allure Video](/src/allure_video.gif)
 
