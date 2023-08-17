@@ -1,4 +1,5 @@
 from selene import browser, have, command
+import allure
 
 
 class DemoWebShop:
@@ -6,13 +7,13 @@ class DemoWebShop:
 
     quantity_to_add: int
 
-
     def __init__(self):
         self.banner_closer = browser.element('#bar-notification .close')
 
         self.shopping_cart = browser.element('#topcartlink')
         self.wishlist = browser.element('.ico-wishlist')
 
+    @allure.step('Открытие вкладки с товарами')
     def choose_category(self, category_name):
         browser.element(f'.top-menu a[href="{category_name}"]').click()
 
@@ -48,24 +49,30 @@ class DemoWebShop:
         products = browser.all('.product-item>.picture>a')
         return products
 
+    @allure.step('Добавление в корзину')
     def add_simple_products_to_cart(self):
         for el in self.get_products_available_to_add:
             el.click()
             browser.with_(timeout=3).wait_until(have.text('product has been added'))
             self.banner_closer.click()
 
+    @allure.step('Добавление товара в wishlist')
     def add_to_wishlist_list(self):
         self.get_all_products_on_page[0].click()
         browser.element('.add-to-cart [id^="add-to-wishlist"]').click()
         self.banner_closer.click()
 
+    @allure.step('Добавление продукта к сравнению')
     def add_to_compare_list(self):
         self.get_all_products_on_page[0].click()
-        self.this_compare_product = browser.element('.compare-products input').locate().text
+        self.this_compare_product = (
+            browser.element('.compare-products input').locate().text
+        )
         browser.element('.compare-products input').click()
 
-
+    @allure.step('Удаление продукта из корзины')
     def remove_product_from_cart(self):
+        self.shopping_cart.click()
         if self.calc_cart_quantity != 0:
             browser.all('.cart-item-row [name="removefromcart"]')[0].click()
             browser.element('.buttons [name="updatecart"]').perform(
@@ -73,21 +80,33 @@ class DemoWebShop:
             )
             browser.element('.buttons [name="updatecart"]').click()
 
+    @allure.step('Проверка изменения количества товаров в корзине')
     def should_addition_products_in_cart(self, qty):
         self.shopping_cart.perform(command.js.scroll_into_view)
         assert self.calc_cart_quantity > qty
 
+    @allure.step('Проверка изменения количества товаров в "Wishlist"')
     def should_quantity_products_in_wishlist(self, qty):
         self.wishlist.perform(command.js.scroll_into_view)
         assert self.calc_wishlist_quantity > qty
 
+    @allure.step('Проверка наличия продукта в листе сравнения')
     def should_product_in_compare_list(self):
-        assert browser.all('.product-name td a')[0].should(have.text(self.this_compare_product))
+        assert browser.all('.product-name td a')[0].should(
+            have.text(self.this_compare_product)
+        )
 
+    @allure.step('Проверка изменения количества товаров в корзине')
     def should_remove_success(self, init_qty):
         assert self.calc_cart_quantity < init_qty
 
+    @allure.step('Проверка пустоты корзины')
+    def should_cart_is_empty(self):
+        assert self.calc_cart_quantity == 0
+
+    @allure.step('Удаление продукта из корзины')
     def remove_all_cart(self):
+        self.shopping_cart.click()
         if self.calc_cart_quantity != 0:
             products = browser.all('.cart-item-row [name="removefromcart"]')
             for p in products:

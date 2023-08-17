@@ -8,6 +8,7 @@ packages = [{include = "demo_web_shop"}]
 
 [tool.poetry.group.dev.dependencies]
 setuptools = "^68.0.0"
+pydantic = "1.10.7"
 
 [tool.pytest.ini_options]
 log_cli = 1

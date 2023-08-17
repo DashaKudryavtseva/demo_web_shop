@@ -6,8 +6,8 @@ from selene import browser
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from utils import attach
-from utils.redefenitions import BaseSession
+from demo_web_shop.utils import attach
+from demo_web_shop.utils.redefenitions import BaseSession
 from dotenv import load_dotenv
 
 
@@ -70,6 +70,7 @@ def login_demoshop(api_ui_client):
         params=payload,
         headers={'content-type': "application/x-www-form-urlencoded; charset=UTF-8"},
         allow_redirects=False,
+        verify=False,
     )
 
     return api_ui_client

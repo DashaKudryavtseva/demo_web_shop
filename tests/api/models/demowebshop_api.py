@@ -1,11 +1,11 @@
 import os
 
-from data.user_info import UserAddress
+from demo_web_shop.data.user_info import UserAddress
 from tests.api.models.cart import Cart
 
 from dotenv import load_dotenv
 
-from utils.redefenitions import BaseSession
+from demo_web_shop.utils.redefenitions import BaseSession
 
 load_dotenv()
 

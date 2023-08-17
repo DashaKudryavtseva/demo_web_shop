@@ -1,8 +1,7 @@
 from requests import Session
 from allure import step
 
-from utils import console_logs
-
+from demo_web_shop.utils import console_logs
 
 
 class BaseSession(Session):

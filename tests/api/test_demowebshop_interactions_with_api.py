@@ -3,7 +3,7 @@ import allure
 from dotenv import load_dotenv
 from allure import step
 
-from data.user_info import UserAddress
+from demo_web_shop.data.user_info import UserAddress
 
 load_dotenv()
 
