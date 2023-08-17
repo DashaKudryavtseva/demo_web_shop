@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from selene import browser
+from selene import browser, have
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -79,6 +79,13 @@ def login_demoshop(api_ui_client):
 @pytest.fixture()
 def open_browser_through_api(login_demoshop, browser_configuration):
     token = login_demoshop.cookies.get('NOPCOMMERCE.AUTH')
+
     browser.open("")
+    if browser.element('#main-message').wait_until(
+        have.text('Your connection is not private')
+    ):
+        browser.element('#details-button').click()
+        browser.element('#final-paragraph').click()
+
     browser.driver.add_cookie({"name": "NOPCOMMERCE.AUTH", "value": token})
     browser.open("")
